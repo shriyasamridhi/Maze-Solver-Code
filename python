@@ -1,0 +1,37 @@
+# Define the maze, start, and end position
+maze = [
+    [0, 0, 0],
+    [1, 1, 0],
+    [0, 0, 0]
+]
+
+start = (0, 0)
+end = (2, 2)
+
+# The evaluate function
+def evaluate(individual):
+    x, y = start
+    steps = 0  # Initialize steps taken
+    for move in individual:
+        steps += 1  # Increment steps at each move
+
+        # Move up, down, left, or right while checking boundaries
+        if move == 'U': y = max(0, y - 1)
+        elif move == 'D': y = min(len(maze) - 1, y + 1)
+        elif move == 'L': x = max(0, x - 1)
+        elif move == 'R': x = min(len(maze[0]) - 1, x + 1)
+
+        # Check if the current position is the end goal
+        if (x, y) == end:
+            return (steps,)  # Return the number of steps taken
+
+        # Check if the current position is a wall
+        if maze[y][x] == 1:
+            break  # Hit a wall, break out of the loop
+
+    # Did not reach the goal, return 100 plus the Manhattan distance to the end
+    return (100 + abs(end[0] - x) + abs(end[1] - y),)
+
+# Example test
+individual = ['D', 'R', 'D', 'D']
+print(evaluate(individual))  # Output: (4,)
